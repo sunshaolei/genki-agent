@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB:       genki
+      POSTGRES_USER:     genki
+      POSTGRES_PASSWORD: genki
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U genki"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL:    postgresql://genki:genki@postgres:5432/genki
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      OPENAI_API_KEY:    ${OPENAI_API_KEY}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
+
+volumes:
+  pgdata:
