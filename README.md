@@ -254,4 +254,4 @@ genki-agent/
 ## Author
 
 Sun Shaolei · AI Application Architect  
-shaolei.sun@gmail.com | [github.com/leosun](https://github.com/leosun)
+shaolei.sun@gmail.com | [github.com/sunshaolei](https://github.com/sunshaolei)
